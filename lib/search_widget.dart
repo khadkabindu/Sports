@@ -1,4 +1,4 @@
-import 'package:fetchuser/teamList.dart';
+import 'package:fetchuser/team_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +30,7 @@ class _SearchWidgetState extends State<SearchWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(
-          height: 100,
+          height: 40,
         ),
         TextField(
           controller: _controller,

@@ -1,5 +1,6 @@
 import 'package:fetchuser/search_widget.dart';
-import 'package:fetchuser/teamList.dart';
+import 'package:fetchuser/team_details.dart';
+import 'package:fetchuser/team_list.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -30,3 +31,5 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+

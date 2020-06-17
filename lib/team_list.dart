@@ -1,3 +1,4 @@
+import 'package:fetchuser/team_details.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -18,7 +19,6 @@ class _TeamListState extends State<TeamList> {
   _TeamListState({this.category});
 
   Future<List<dynamic>> fetchTeams() async {
-    print("i am category $category");
     var result;
     try {
       result = await http.get(
@@ -37,6 +37,10 @@ class _TeamListState extends State<TeamList> {
     return user['strCountry'];
   }
 
+  String _description(dynamic user) {
+    return user['strStadiumDescription'];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,25 +52,37 @@ class _TeamListState extends State<TeamList> {
               child: Text("No Teams found"),
             );
           }
-
           if (snapshot.hasData) {
             return ListView.builder(
                 shrinkWrap: true,
                 padding: EdgeInsets.all(8),
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    child: Column(
-                      children: <Widget>[
-                        ListTile(
-                          leading: CircleAvatar(
-                              radius: 30,
-                              backgroundImage: NetworkImage(
-                                  snapshot.data[index]['strTeamBadge'])),
-                          title: Text(_teamName(snapshot.data[index])),
-                          subtitle: Text(_location(snapshot.data[index])),
-                        )
-                      ],
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TeamDetails(
+                              description: snapshot.data[index]
+                                  ['strStadiumDescription'],
+                              photo: snapshot.data[index]['strTeamBadge'],title: snapshot.data[index]['strTeam'],),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      child: Column(
+                        children: <Widget>[
+                          ListTile(
+                            leading: CircleAvatar(
+                                radius: 30,
+                                backgroundImage: NetworkImage(
+                                    snapshot.data[index]['strTeamBadge'])),
+                            title: Text(_teamName(snapshot.data[index])),
+                            subtitle: Text(_location(snapshot.data[index])),
+                          )
+                        ],
+                      ),
                     ),
                   );
                 });
