@@ -43,58 +43,66 @@ class _TeamListState extends State<TeamList> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: FutureBuilder<List<dynamic>>(
-        future: fetchTeams(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.data == null) {
-            return Center(
-              child: Text("No Teams found"),
-            );
-          }
-          if (snapshot.hasData) {
-            return ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.all(8),
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TeamDetails(
-                              description: snapshot.data[index]
-                                  ['strStadiumDescription'],
-                              photo: snapshot.data[index]['strTeamBadge'],title: snapshot.data[index]['strTeam'],),
-                        ),
-                      );
-                    },
-                    child: Card(
-                      child: Column(
-                        children: <Widget>[
-                          ListTile(
-                            leading: CircleAvatar(
-                                radius: 30,
-                                backgroundImage: NetworkImage(
-                                    snapshot.data[index]['strTeamBadge'])),
-                            title: Text(_teamName(snapshot.data[index])),
-                            subtitle: Text(_location(snapshot.data[index])),
-                          )
-                        ],
+    return FutureBuilder<List<dynamic>>(
+      future: fetchTeams(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.data == null) {
+          return Container(
+            height: 600,
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 150,),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                    child: Image.asset('images/cartoon.png',height: 200,)),
+                SizedBox(height: 20.0,),
+                Text('   Search your favourite Team'),
+              ],
+            ),
+          );
+        }
+        if (snapshot.hasData) {
+          return ListView.builder(
+              shrinkWrap: true,
+              padding: EdgeInsets.all(8),
+              itemCount: snapshot.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TeamDetails(
+                            description: snapshot.data[index]
+                                ['strStadiumDescription'],
+                            photo: snapshot.data[index]['strTeamBadge'],title: snapshot.data[index]['strTeam'],),
                       ),
+                    );
+                  },
+                  child: Card(
+                    child: Column(
+                      children: <Widget>[
+                        ListTile(
+                          leading: CircleAvatar(
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                  snapshot.data[index]['strTeamBadge'])),
+                          title: Text(_teamName(snapshot.data[index])),
+                          subtitle: Text(_location(snapshot.data[index])),
+                        )
+                      ],
                     ),
-                  );
-                });
-          }
-          if (snapshot.hasError) {
-            return Center(
-              child: Text(snapshot.error),
-            );
-          }
-          return Center(child: CircularProgressIndicator());
-        },
-      ),
+                  ),
+                );
+              });
+        }
+        if (snapshot.hasError) {
+          return Center(
+            child: Text(snapshot.error),
+          );
+        }
+        return Center(child: CircularProgressIndicator());
+      },
     );
   }
 }
